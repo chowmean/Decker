@@ -8,6 +8,7 @@ import requests
 from resources import REDISINSTANCE
 import string
 import random
+import flask
 
 
 def parseGemfile(path):
@@ -56,16 +57,18 @@ class login(Resource):
     def get(self):
         code=request.args.lists()
         code= code[0][1][0]
-        payload = {'client_id': '81e6dc85d40f05e4c2f7', 'client_secret': 'bc5bb3d0423eaa7asdasdascaa7','code':code}
+        payload = {'client_id': '81e6dc85d40f05e4c2f7', 'client_secret': 'bc5bb3d0423eaa7a10080869ae1061374682caa7','code':code}
         r = requests.post("https://github.com/login/oauth/access_token", data=payload)
         key=''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(36))
         print key
-        REIDSINSTANCE.set(key,r.content.split('&')[0].split('=')[1])
-        return {'code':key}
+        REDISINSTANCE.set(key,r.content.split('&')[0].split('=')[1])
+        resp = flask.Response('{"code":"'+key+'"}')
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
 
 class get_name(Resource):
     def get(self,key):
-        value=REIDSINSTANCE.get(key)
+        value=REDISINSTANCE.get(key)
         r=requests.get("https://api.github.com/user?access_token="+value)
         print r.content
 

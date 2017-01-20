@@ -24,6 +24,7 @@ def next_version_rails(id):
     print id
     output = subprocess.check_output(['gem','list',id,'-all','-r'])
     line=output.split('\n')
+    version="No Info"
     for l in line:
         if(l.split(' (')[0]==id):
             version=l.split(' (')[1].split(',')[0]
