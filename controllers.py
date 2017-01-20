@@ -160,6 +160,7 @@ class dependencies(Resource):
         for er in data['projects']:
             if(er['project']==id):
                 data_to_return = er
+        print data_to_return
         if(data_to_return['language']=="ror"):
             return [parseGemfile(data_to_return['path'])]
         if(data_to_return['language']=="node"):
@@ -169,3 +170,81 @@ class dependencies(Resource):
         if(data_to_return['language']=="python"):
             return [parsePython(data_to_return['path'])]
         return {"success":"false"}
+
+
+class VulnerabilityProjectInfoCPE(Resource):
+    def get(self,target):
+        with open('config.json') as json_data_file:
+            data = json.load(json_data_file)
+        for er in data['projects']:
+            if(er['project']==target):
+                data_to_return = er
+        print data_to_return
+        if(data_to_return['language']=="ror"):
+            tr = [parseGemfile(data_to_return['path'])]
+        if(data_to_return['language']=="node"):
+            tr = [parseNode(data_to_return['path'])]
+        if(data_to_return['language']=="php"):
+            tr = [parsePhp(data_to_return['path'])]
+        if(data_to_return['language']=="python"):
+            tr = [parsePython(data_to_return['path'])]
+        print "here\n\n"
+        print tr
+        ret = []
+        for a in tr[0]:
+            target = a
+            version = tr[0][a]
+            client = MongoClient()
+            db = client.decker
+            coll = db.cpe
+            #cursor = coll.find({"cpe_2_2": target, "cpe_2_2":  version} })
+            target = ".*" + target + ".*"
+            version = ".*" + version + ".*"
+            cursor = coll.find({"$and" : [{"cpe_2_2": { "$regex": target}},{ "cpe_2_2": { "$regex": version}} ]})
+            i = 0
+            for document in cursor:
+                print(json.dumps(document, default=json_util.default))
+                ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
+                if i == 10 :
+                    break
+                i += 1
+            if(i!=0):
+                REDISINSTANCE.set(target,REDISINSTANCE.get(target)+1)
+        return ret
+class VulnerabilityProjectInfoCVES(Resource):
+    def get(self,target):
+        with open('config.json') as json_data_file:
+            data = json.load(json_data_file)
+        for er in data['projects']:
+            if(er['project']==target):
+                data_to_return = er
+        print data_to_return
+        if(data_to_return['language']=="ror"):
+            tr = [parseGemfile(data_to_return['path'])]
+        if(data_to_return['language']=="node"):
+            tr = [parseNode(data_to_return['path'])]
+        if(data_to_return['language']=="php"):
+            tr = [parsePhp(data_to_return['path'])]
+        if(data_to_return['language']=="python"):
+            tr = [parsePython(data_to_return['path'])]
+        print tr
+        ret = []
+        for a in tr[0]:
+            target = a
+            version = tr[0][a]
+            client = MongoClient()
+            db = client.decker
+            coll = db.cves
+            target = ".*" + target + ".*"
+            version = ".*" + version + ".*"
+            cursor = coll.find({ "$and" : [{"vulnerable_configuration_cpe_2_2": { "$regex": target }}, {"vulnerable_configuration_cpe_2_2": { "$regex": version}}]})
+            i = 0
+            for document in cursor:
+                print(json.dumps(document, default=json_util.default))
+                ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
+                if i == 10 :
+                    break
+                i += 1
+            if(i!=0):
+                REDISINSTANCE.set(target,REDISINSTANCE.get(target)+1)
+        return ret
