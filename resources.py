@@ -4,6 +4,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask import request
 import os
 from flask.ext.cors import CORS
+import redis
+REDISINSTANCE = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 application = Flask(__name__)
 api=Api(application)
