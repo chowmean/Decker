@@ -44,7 +44,7 @@ def parsePython(path):
         for line in f:
             tr[line.split("==")[0]]=line.split("==")[1].strip()
     print tr
-    return data['require']
+    return tr
 
 
 
