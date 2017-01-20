@@ -7,11 +7,10 @@ from flask.ext.cors import CORS
 import redis
 REDISINSTANCE = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-application = Flask(__name__)
+application = Flask("decker")
+application.config['DEBUG'] = True
 api=Api(application)
 cors = CORS(application, resources={r"/api/*": {"origins": "*"}})
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(),'upload_directory')
 application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root@localhost:3306/horizon'
-db = SQLAlchemy(application, session_options={'expire_on_commit': False})

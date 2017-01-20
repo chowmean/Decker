@@ -10,6 +10,12 @@ import string
 import random
 import flask
 
+#from flask.ext.pymongo import PyMongo
+#from resources import mongo
+from bson import json_util
+from pymongo import MongoClient
+
+
 
 def parseGemfile(path):
     tr=dict()
@@ -72,12 +78,72 @@ class get_name(Resource):
         r=requests.get("https://api.github.com/user?access_token="+value)
         print r.content
 
+class VulnerabilityInfoCPE(Resource):
+    def get(self, target, version):##:cpe:/a:data_general:dg_ux:y2k_patchr4.11mu05
+        client = MongoClient()
+        db = client.decker
+        coll = db.cpe
+        #cursor = coll.find({"cpe_2_2": target, "cpe_2_2":  version} })
+        target = ".*" + target + ".*"
+        version = ".*" + version + ".*"
+        #cursor = coll.find({"$and": [{"cpe_2_2":  target}, {"cpe_2_2": version}]})
+        cursor = coll.find({"$and" : [{"cpe_2_2": { "$regex": target}},{ "cpe_2_2": { "$regex": version}} ]})
+        #cursor = coll.find({"vulnerable_configuration_cpe_2_2": { "$regex": target }})
+        print "\n\nversion = "+version+"\n\n"
+        print "\n\ntarget = "+target+"\n\n"
+        i = 0
+        ret = []
+        for document in cursor:
+            print(json.dumps(document, default=json_util.default))
+            ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
+            if i == 10 :
+                break
+            i += 1
+        return ret
+        #return json.dumps([doc for doc in mongo.db.cves.find({"vulnerable_configuration_cpe_2_2":/rails:4.2.0/})],separators=(',', ': '))
+        #return json.dumps([doc for doc in mongo.db.cvess])
+class VulnerabilityInfoCVES(Resource):
+    def get(self, target, version):##:cpe:/a:data_general:dg_ux:y2k_patchr4.11mu05
+        client = MongoClient()
+        db = client.decker
+        coll = db.cves
+        target = ".*" + target + ".*"
+        version = ".*" + version + ".*"
+        cursor = coll.find({ "$and" : [{"vulnerable_configuration_cpe_2_2": { "$regex": target }}, {"vulnerable_configuration_cpe_2_2": { "$regex": version}}]})
+        #cursor = coll.find({"vulnerable_configuration_cpe_2_2": { "$regex": target }})
+        print "\n\nversion = "+version+"\n\n"
+        print "\n\ntarget = "+target+"\n\n"
+        i = 0
+        ret = []
+        for document in cursor:
+            print(json.dumps(document, default=json_util.default))
+            ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
+            if i == 10 :
+                break
+            i += 1
+        return ret
+        #return json.dumps([doc for doc in mongo.db.cves.find({"vulnerable_configuration_cpe_2_2":/rails:4.2.0/})],separators=(',', ': '))
+        #return json.dumps([doc for doc in mongo.db.cvess])
+
 
 class testClass(Resource):
     def get(self):
-		return {"data":"hey","succes":True}
-
-
+        client = MongoClient()
+        db = client.decker
+        coll = db.cves
+        cursor = coll.find({"vulnerable_configuration_cpe_2_2": { "$regex": "2k_patchr4.11mu05"}})
+        print "\n\nsadasdasdasdasdasdasddasdasd\n\n"
+        i = 0
+        ret = []
+        for document in cursor:
+            print(json.dumps(document, default=json_util.default))
+            ret.insert(len(ret), json.dumps(document, default=json_util.default))
+            if i == 10 :
+                break
+            i += 1
+        return ret
+        #return json.dumps([doc for doc in mongo.db.cves.find({"vulnerable_configuration_cpe_2_2":/rails:4.2.0/})],separators=(',', ': '))
+        #return json.dumps([doc for doc in mongo.db.cvess])
 
 class repositories(Resource):
     def get(self):
