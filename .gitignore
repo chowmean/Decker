@@ -1,0 +1,7 @@
+*.json
+*.pyc
+*.env
+*.pem
+*.swp
+.DS_Store
+.idea/*

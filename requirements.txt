@@ -1,0 +1,68 @@
+# This is a Requirement file
+# all the Package we used list here
+# add package name with version
+# example : Flask >=0.9.1 (if package is available)
+# else give git location
+# -e git+https://github.com/flask-restful/flask-restful.git@a8fe0ec1ff08e9b61d7e56531c3c05ef5bbcd346#egg=Flask_RESTful-dev
+# for more deatils u can see pip1.2.1/docs/requirement.txt
+# and run pip install -r requirement.txt
+# currently we used
+Flask==0.10.1
+#-e git+https://github.com/flask-restful/flask-restful.git@a8fe0ec1ff08e9b61d7e56531c3c05ef5bbcd346#egg=Flask_RESTful-dev
+Jinja2==2.9.dev
+Werkzeug==0.11.dev0
+MarkupSafe==0.23
+mysql-connector-python==2.0.4
+requests==2.2.1
+Flask-SQLAlchemy==2.0-20150820
+# ......
+CDApplet==1.0
+CDBashApplet==1.0
+MySQL-python==1.2.3
+PAM==0.4.2
+Pillow==2.3.0
+Twisted-Core==13.2.0
+Twisted-Web==13.2.0
+aniso8601==1.0.0
+apt-xapian-index==0.45
+argparse==1.2.1
+chardet==2.0.1
+colorama==0.2.5
+command-not-found==0.3
+debtagshw==0.1
+decorator==3.4.0
+defer==1.0.6
+dirspec==13.10
+dnspython==1.11.1
+html5lib==0.999
+httplib2==0.8
+ipython==1.2.1
+itsdangerous==0.24
+lxml==3.3.3
+oauthlib==0.6.1
+oneconf==0.3.7
+pexpect==3.1
+piston-mini-client==0.7.5
+psutil==1.2.1
+pyOpenSSL==0.13
+pycrypto==2.6.1
+pycups==1.9.66
+pycurl==7.19.3
+pygobject==3.12.0
+pygpgme==0.3
+pyserial==2.6
+pysmbc==1.0.14.1
+python-apt==0.9.3.5ubuntu1
+python-debian==0.1.21-nmu2ubuntu2
+pytz==2015.4
+pyxdg==0.25
+reportlab==3.0
+sessioninstaller==0.0.0
+simplegeneric==0.8.1
+six==1.5.2
+software-center-aptd-plugins==0.0.0
+system-service==0.1.6
+urllib3==1.7.1
+wheel==0.24.0
+wsgiref==0.1.2
+zope.interface==4.0.5
