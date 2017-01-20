@@ -4,11 +4,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask import request
 import os
 from flask.ext.cors import CORS
-from flask.ext.pymongo import PyMongo
+import redis
+REDISINSTANCE = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 application = Flask("decker")
 application.config['DEBUG'] = True
-mongo = PyMongo(application)
 api=Api(application)
 cors = CORS(application, resources={r"/api/*": {"origins": "*"}})
 
