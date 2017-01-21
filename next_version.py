@@ -12,9 +12,10 @@ def next_version_python(id):
     print id
     output = subprocess.check_output(['pip','list','-o'])
     line=output.split('\n')
-    version="No Info"
+    version="Your Repository is Latest Version"
     for l in line:
         if(l.split(' (')[0]==id):
+            print 'here'
             version = l.split('Latest: ')[1].split(' [')[0]
             version.strip()
     return {"success":"true","next_version":version}
