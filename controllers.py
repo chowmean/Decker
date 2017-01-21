@@ -205,11 +205,14 @@ class VulnerabilityProjectInfoCPE(Resource):
             for document in cursor:
                 print(json.dumps(document, default=json_util.default))
                 ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
-                if i == 10 :
+                if i == 3 :
                     break
                 i += 1
             if(i!=0):
-                REDISINSTANCE.set(target,REDISINSTANCE.get(target)+1)
+                if REDISINSTANCE.get(target)!=None:
+                    REDISINSTANCE.set(target,int(REDISINSTANCE.get(target))+1)
+                else:
+                    REDISINSTANCE.set(target,1)
         return ret
 class VulnerabilityProjectInfoCVES(Resource):
     def get(self,target):
@@ -242,9 +245,12 @@ class VulnerabilityProjectInfoCVES(Resource):
             for document in cursor:
                 print(json.dumps(document, default=json_util.default))
                 ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
-                if i == 10 :
+                if i == 3 :
                     break
                 i += 1
             if(i!=0):
-                REDISINSTANCE.set(target,REDISINSTANCE.get(target)+1)
+                if REDISINSTANCE.get(target)!=None:
+                    REDISINSTANCE.set(target,int(REDISINSTANCE.get(target))+1)
+                else:
+                    REDISINSTANCE.set(target,1)
         return ret
