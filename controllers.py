@@ -79,7 +79,10 @@ def parsePython(path):
     tr=dict()
     with open(path) as f:
         for line in f:
-            tr[line.split("==")[0]]=line.split("==")[1].strip()
+            try:
+                tr[line.split("==")[0]]=line.split("==")[1].strip()
+            except:
+                print "skipping"
     print tr
     return tr
 
