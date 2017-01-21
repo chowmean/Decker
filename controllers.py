@@ -14,8 +14,33 @@ import flask
 #from resources import mongo
 from bson import json_util
 from pymongo import MongoClient
-
-
+OFFSET = 4          # Later we replace it with https://en.wikipedia.org/wiki/Percentile_rank
+def get_lib_score(tr):
+    total_libs_count = 0
+    for a in tr[0]:
+        total_libs_count += 1
+        target = a
+        version = tr[0][a]
+        client = MongoClient()
+        db = client.decker
+        coll = db.cves
+        target = ".*" + target + ".*"
+        version = ".*" + version + ".*"
+        i = coll.find({ "$and" : [{"vulnerable_configuration_cpe_2_2": { "$regex": target }}, {"vulnerable_configuration_cpe_2_2": { "$regex": version}}]}).count()
+        # i = 0
+        # for document in cursor:
+        #     #print(json.dumps(document, default=json_util.default))
+        #     #ret.insert(len(ret), json.dumps(document, default=json_util.default).strip())
+        #     if i == 3 :
+        #         break
+        #     i += 1
+        sc = 0
+        if total_libs_count != 0:
+            sc =  OFFSET + (i / total_libs_count ) * 100;
+            if(sc >= 100):
+                sc = 100
+        print "IN FUNCTION"
+        return 100 - sc
 
 def parseGemfile(path):
     tr=dict()
@@ -100,8 +125,6 @@ class VulnerabilityInfoCPE(Resource):
                 break
             i += 1
         return ret
-        #return json.dumps([doc for doc in mongo.db.cves.find({"vulnerable_configuration_cpe_2_2":/rails:4.2.0/})],separators=(',', ': '))
-        #return json.dumps([doc for doc in mongo.db.cvess])
 class VulnerabilityInfoCVES(Resource):
     def get(self, target, version):##:cpe:/a:data_general:dg_ux:y2k_patchr4.11mu05
         client = MongoClient()
@@ -110,9 +133,6 @@ class VulnerabilityInfoCVES(Resource):
         target = ".*" + target + ".*"
         version = ".*" + version + ".*"
         cursor = coll.find({ "$and" : [{"vulnerable_configuration_cpe_2_2": { "$regex": target }}, {"vulnerable_configuration_cpe_2_2": { "$regex": version}}]})
-        #cursor = coll.find({"vulnerable_configuration_cpe_2_2": { "$regex": target }})
-        print "\n\nversion = "+version+"\n\n"
-        print "\n\ntarget = "+target+"\n\n"
         i = 0
         ret = []
         for document in cursor:
@@ -132,7 +152,6 @@ class testClass(Resource):
         db = client.decker
         coll = db.cves
         cursor = coll.find({"vulnerable_configuration_cpe_2_2": { "$regex": "2k_patchr4.11mu05"}})
-        print "\n\nsadasdasdasdasdasdasddasdasd\n\n"
         i = 0
         ret = []
         for document in cursor:
@@ -188,7 +207,6 @@ class VulnerabilityProjectInfoCPE(Resource):
             tr = [parsePhp(data_to_return['path'])]
         if(data_to_return['language']=="python"):
             tr = [parsePython(data_to_return['path'])]
-        print "here\n\n"
         print tr
         ret = []
         for a in tr[0]:
@@ -197,7 +215,6 @@ class VulnerabilityProjectInfoCPE(Resource):
             client = MongoClient()
             db = client.decker
             coll = db.cpe
-            #cursor = coll.find({"cpe_2_2": target, "cpe_2_2":  version} })
             target = ".*" + target + ".*"
             version = ".*" + version + ".*"
             cursor = coll.find({"$and" : [{"cpe_2_2": { "$regex": target}},{ "cpe_2_2": { "$regex": version}} ]})
@@ -208,12 +225,8 @@ class VulnerabilityProjectInfoCPE(Resource):
                 if i == 3 :
                     break
                 i += 1
-            if(i!=0):
-                if REDISINSTANCE.get(target)!=None:
-                    REDISINSTANCE.set(target,int(REDISINSTANCE.get(target))+1)
-                else:
-                    REDISINSTANCE.set(target,1)
         return ret
+
 class VulnerabilityProjectInfoCVES(Resource):
     def get(self,target):
         with open('config.json') as json_data_file:
@@ -248,9 +261,30 @@ class VulnerabilityProjectInfoCVES(Resource):
                 if i == 3 :
                     break
                 i += 1
-            if(i!=0):
-                if REDISINSTANCE.get(target)!=None:
-                    REDISINSTANCE.set(target,int(REDISINSTANCE.get(target))+1)
-                else:
-                    REDISINSTANCE.set(target,1)
         return ret
+
+class VulnerabilityProjectQualityIndex(Resource):
+
+    def get(self):
+        with open('config.json') as json_data_file:
+            data = json.load(json_data_file)
+        score = {}
+        for er in data['projects']:
+            project_meta_data = er
+            if(project_meta_data['language']=="ror"):
+                tr = [parseGemfile(project_meta_data['path'])]
+                score[project_meta_data['project']] = get_lib_score(tr)
+            if(project_meta_data['language']=="node"):
+                tr = [parseNode(project_meta_data['path'])]
+                score[project_meta_data['project']] = get_lib_score(tr)
+            if(project_meta_data['language']=="php"):
+                tr = [parsePhp(project_meta_data['path'])]
+                score[project_meta_data['project']] = get_lib_score(tr)
+            if(project_meta_data['language']=="python"):
+                tr = [parsePython(project_meta_data['path'])]
+                score[project_meta_data['project']] = get_lib_score(tr)
+            break
+        print score
+
+        return score
+
