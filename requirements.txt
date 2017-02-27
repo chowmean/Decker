@@ -35,7 +35,7 @@ defer==1.0.6
 dirspec==13.10
 dnspython==1.15.0
 html5lib==0.999999999
-httplib2==0.8
+httplib2==0.10.3
 ipython==1.2.1
 itsdangerous==0.24
 lxml==3.3.3
