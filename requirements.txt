@@ -13,7 +13,7 @@ Jinja2==2.9.5
 Werkzeug==0.11.15
 MarkupSafe==0.23
 mysql-connector-python==2.0.4
-requests==2.2.1
+requests==2.13.0
 Flask-SQLAlchemy==2.0-20150820
 # ......
 CDApplet==1.0
