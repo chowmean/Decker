@@ -59,7 +59,7 @@ pyxdg==0.25
 reportlab==3.3.0
 sessioninstaller==0.0.0
 simplegeneric==0.8.1
-six==1.5.2
+six==1.10.0
 software-center-aptd-plugins==0.0.0
 system-service==0.1.6
 urllib3==1.7.1
