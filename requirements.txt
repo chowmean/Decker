@@ -56,7 +56,7 @@ python-apt==0.7.8
 python-debian==0.1.28
 pytz==2016.10
 pyxdg==0.25
-reportlab==3.0
+reportlab==3.3.0
 sessioninstaller==0.0.0
 simplegeneric==0.8.1
 six==1.5.2
