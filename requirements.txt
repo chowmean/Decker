@@ -25,7 +25,7 @@ Twisted-Core==13.2.0
 Twisted-Web==13.2.0
 aniso8601==1.2.0
 apt-xapian-index==0.45
-argparse==1.2.1
+argparse==1.4.0
 chardet==2.0.1
 colorama==0.2.5
 command-not-found==0.3
