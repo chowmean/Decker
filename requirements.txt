@@ -53,7 +53,7 @@ pygpgme==0.3
 pyserial==3.2.1
 pysmbc==1.0.15.6
 python-apt==0.7.8
-python-debian==0.1.21-nmu2ubuntu2
+python-debian==0.1.28
 pytz==2015.4
 pyxdg==0.25
 reportlab==3.0
