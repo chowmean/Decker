@@ -65,4 +65,4 @@ system-service==0.1.6
 urllib3==1.20
 wheel==0.29.0
 wsgiref==0.1.2
-zope.interface==4.0.5
+zope.interface==4.3.3
