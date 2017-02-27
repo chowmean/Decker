@@ -7,7 +7,7 @@
 # for more deatils u can see pip1.2.1/docs/requirement.txt
 # and run pip install -r requirement.txt
 # currently we used
-Flask==0.10.1
+Flask==0.12
 #-e git+https://github.com/flask-restful/flask-restful.git@a8fe0ec1ff08e9b61d7e56531c3c05ef5bbcd346#egg=Flask_RESTful-dev
 Jinja2==2.9.dev
 Werkzeug==0.11.dev0
