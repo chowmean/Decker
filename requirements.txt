@@ -39,7 +39,7 @@ httplib2==0.10.3
 ipython==5.3.0
 itsdangerous==0.24
 lxml==3.7.3
-oauthlib==0.6.1
+oauthlib==2.0.1
 oneconf==0.3.7
 pexpect==3.1
 piston-mini-client==0.7.5
