@@ -10,7 +10,7 @@
 Flask==0.10.1
 #-e git+https://github.com/flask-restful/flask-restful.git@a8fe0ec1ff08e9b61d7e56531c3c05ef5bbcd346#egg=Flask_RESTful-dev
 Jinja2==2.9.dev
-Werkzeug==0.11.dev0
+Werkzeug==0.15.3
 MarkupSafe==0.23
 mysql-connector-python==2.0.4
 requests==2.2.1
