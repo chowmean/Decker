@@ -38,7 +38,7 @@ html5lib==0.999
 httplib2==0.8
 ipython==1.2.1
 itsdangerous==0.24
-lxml==3.3.3
+lxml==4.6.2
 oauthlib==0.6.1
 oneconf==0.3.7
 pexpect==3.1
