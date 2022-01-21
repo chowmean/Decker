@@ -36,7 +36,7 @@ dirspec==13.10
 dnspython==1.11.1
 html5lib==0.999
 httplib2==0.8
-ipython==1.2.1
+ipython==7.16.3
 itsdangerous==0.24
 lxml==3.3.3
 oauthlib==0.6.1
